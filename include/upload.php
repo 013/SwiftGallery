@@ -26,6 +26,13 @@
 <div id="fine-uploader">
 </div>
 
+</div>
+
+
+<form id="foo">
+
+
+
 <input type="hidden" name="count" value="1" />
 <div class="control-group" id="fields">
 <label class="control-label" for="field1">Nice Multiple Form Fields</label>
@@ -37,7 +44,11 @@
 </div>
 
 
-</div>
+<input type="submit" value="Send" />
+
+</form>
+
+
 
 <script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
 
@@ -72,21 +83,86 @@ $(document).ready(function() {
 		}
 	}).on('complete', function(event, id, fileName, responseJSON) {
 		if (responseJSON.success) {
+			// Append image to somewhere in form
 			$(this).append(
 			'<img src="images/'
 			+responseJSON.md5.substring(0,4)+'/'+responseJSON.md5.substring(4,12)+'_thumb.'+fileName.split('.').reverse()[0]+
 			'" >'
 			);
+			addFormField(responseJSON.md5)
 		}
 	});
+
+
+
+	// variable to hold request
+	var request;
+	// bind to the submit event of our form
+	$("#foo").submit(function(event){
+	    // abort any pending request
+	    if (request) {
+	        request.abort();
+    	}
+	    // setup some local variables
+	    var $form = $(this);
+	    // let's select and cache all the fields
+	    var $inputs = $form.find("input, select, button, textarea");
+	    // serialize the data in the form
+	    var serializedData = $form.serialize();
+	
+	    // let's disable the inputs for the duration of the ajax request
+	    $inputs.prop("disabled", true);
+	
+	    // fire off the request to /form.php
+	    request = $.ajax({
+	        url: "include/form.php",
+	        type: "post",
+	        data: serializedData
+	    });
+	
+	    // callback handler that will be called on success
+	    request.done(function (response, textStatus, jqXHR){
+	        // log a message to the console
+	        console.log(response);
+	        console.log("Hooray, it worked!");
+	    });
+	
+	    // callback handler that will be called on failure
+	    request.fail(function (jqXHR, textStatus, errorThrown){
+	        // log the error to the console
+	        console.error(
+	            "The following error occured: "+
+	            textStatus, errorThrown
+	        );
+	    });
+	
+	    // callback handler that will be called regardless
+	    // if the request failed or succeeded
+	    request.always(function () {
+	        // reenable the inputs
+        	$inputs.prop("disabled", false);
+		});
+	
+	    // prevent default posting of form
+	    event.preventDefault();
+	});
+
+
+
+
+
+
+
+
+
 });
 
 
 var next = 1;
-function addFormField(){
+function addFormField(Tvalue){
 	var addto = "#field" + next;
 	next = next + 1;
-	var newIn = '<br /><br /><input autocomplete="off" class="span3" id="field' + next + '" name="field' + next + '" type="text" data-provide="typeahead" data-items="8">';
+	var newIn = '<br /><br /><input autocomplete="off" class="span3" id="field' + next + '" name="field' + next + '" type="text" data-provide="typeahead" data-items="8" value="' + Tvalue + '">';
 	var newInput = $(newIn);
 	$(addto).after(newInput);
 	$("#field" + next).attr('data-source',$(addto).attr('data-source'));

@@ -13,8 +13,10 @@ def thumb(infile, ext):
 		im.thumbnail(size, Image.ANTIALIAS)
 		im.save(outfile, types[ext.lower()])
 	except IOError, e:
+		# Needs changing to write errors to a file
 		print "cannot create thumbnail for", infile
 		print outfile
 		print e
 
 thumb(sys.argv[1], sys.argv[2])
+

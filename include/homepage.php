@@ -2,7 +2,7 @@
 	<div class="Collage">
 <?php
 foreach($results['images'] as $image) { ?>
-	<a href="?imgid=<?=$image->id;?>"><img class="abc" src="images/thumbs/<?=substr($image->imageHash, 0,4).'/'.substr($image->imageHash, 4,8).$image->imageTypes[$image->mimeType];?>">
+	<a href="?imgid=<?=$image->id;?>"><img class="abc" src="images/<?=substr($image->imageHash, 0,4).'/'.substr($image->imageHash, 4,8).'_thumb'.$image->imageTypes[$image->mimeType];?>">
 </a>
 
 <? } 
