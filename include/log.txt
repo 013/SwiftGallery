@@ -1,1 +1,0 @@
-./thumb.py ../images/5bb0/00b459cb.gif .gif

@@ -5,10 +5,10 @@ class qqFileUploader {
     public $allowedExtensions = array();
     public $sizeLimit = null;
     public $inputName = 'qqfile';
-    public $chunksFolder = 'chunks';
+    //public $chunksFolder = 'chunks';
 
-    public $chunksCleanupProbability = 0.001; // Once in 1000 requests on avg
-    public $chunksExpireIn = 604800; // One week
+    //public $chunksCleanupProbability = 0.001; // Once in 1000 requests on avg
+    //public $chunksExpireIn = 604800; // One week
 
     protected $uploadName;
 	protected $uploadHash;
@@ -48,12 +48,12 @@ class qqFileUploader {
      */
     public function handleUpload($uploadDirectory, $name = null){
 
-        if (is_writable($this->chunksFolder) &&
-            1 == mt_rand(1, 1/$this->chunksCleanupProbability)){
+        //if (is_writable($this->chunksFolder) &&
+          //  1 == mt_rand(1, 1/$this->chunksCleanupProbability)){
 
             // Run garbage collection
-            $this->cleanupChunks();
-        }
+            //$this->cleanupChunks();
+        //}
 
         // Check that the max upload size specified in class configuration does not
         // exceed size allowed by server config
@@ -84,13 +84,10 @@ class qqFileUploader {
 		$ext = array("image/png" => ".png", "image/gif"=>".gif","image/jpeg"=>".jpg");
         $file = $_FILES[$this->inputName];
         $type = $file['type'];
-		$md5 = md5_file($file['tmp_name']);
+		$md5 = md5_file($file['tmp_name']); // Check if MD5 hash already exists in DB [todo]
+		$dir1 = substr($md5, 0, 4);	
 		$this->uploadHash = $md5;
 		$this->uploadExt = $ext[$type];
-		//$dirs = array(
-			$dir1 = substr($md5, 0, 4);/*,
-			substr($md5, 4, 8)*/
-		//);
 		mkdir('/usr/share/nginx/www/SwiftGallery/images/'.$dir1, 0755);
 		$size = $file['size'];
 
@@ -130,28 +127,28 @@ class qqFileUploader {
 
         $totalParts = isset($_REQUEST['qqtotalparts']) ? (int)$_REQUEST['qqtotalparts'] : 1;
 
-        if ($totalParts > 1){
+ //       if ($totalParts > 1){
 
-            $chunksFolder = $this->chunksFolder;
+            /*$chunksFolder = $this->chunksFolder;
             $partIndex = (int)$_REQUEST['qqpartindex'];
             $uuid = $_REQUEST['qquuid'];
 
             if (!is_writable($chunksFolder) && !is_executable($uploadDirectory)){
                 return array('error' => "Server error. Chunks directory isn't writable or executable.");
             }
-
-            $targetFolder = $this->chunksFolder.DIRECTORY_SEPARATOR.$uuid;
+*/
+           // $targetFolder = $this->chunksFolder.DIRECTORY_SEPARATOR.$uuid;
 
             //if (!file_exists($targetFolder)){
             //	mkdir($targetFolder);
             //}
 			
             
-			$target = $targetFolder.'/'.$partIndex;
-            $success = move_uploaded_file($_FILES[$this->inputName]['tmp_name'], $target);
+//			$target = $targetFolder.'/'.$partIndex;
+  //          $success = move_uploaded_file($_FILES[$this->inputName]['tmp_name'], $target);
 
 				
-            
+           /* 
 			// Last chunk saved successfully
             if ($success AND ($totalParts-1 == $partIndex)){
 
@@ -181,20 +178,21 @@ class qqFileUploader {
             return array("success" => true);
 
         } else {
+*/
+            //$target = $this->getUniqueTargetPath($uploadDirectory.'/'.$dir1, $name);
 
-            $target = $this->getUniqueTargetPath($uploadDirectory.'/'.$dir1, $name);
-
-            if ($target){
+            //if ($target){
+				$target = $uploadDirectory.'/'.$dir1.'/'.$name;
                 $this->uploadName = basename($target);
 
                 if (move_uploaded_file($file['tmp_name'], $target)){
                     return array('success'=> true);
                 }
-            }
+            //}
 
             return array('error'=> 'Could not save uploaded file.' .
                 'The upload was cancelled, or server error encountered');
-        }
+        //}
     }
 
     /**
@@ -203,7 +201,7 @@ class qqFileUploader {
      * @param string $uploadDirectory Target directory
      * @param string $filename The name of the file to use.
      */
-    protected function getUniqueTargetPath($uploadDirectory, $filename)
+/*    protected function getUniqueTargetPath($uploadDirectory, $filename)
     {
         // Allow only one process at the time to get a unique file name, otherwise
         // if multiple people would upload a file with the same name at the same time
@@ -243,12 +241,12 @@ class qqFileUploader {
 
         return $result;
     }
-
+*/
     /**
      * Deletes all file parts in the chunks folder for files uploaded
      * more than chunksExpireIn seconds ago
      */
-    protected function cleanupChunks(){
+ /*   protected function cleanupChunks(){
         foreach (scandir($this->chunksFolder) as $item){
             if ($item == "." || $item == "..")
                 continue;
@@ -263,12 +261,12 @@ class qqFileUploader {
             }
         }
     }
-
+*/
     /**
      * Removes a directory and all files contained inside
      * @param string $dir
      */
-    protected function removeDir($dir){
+  /*  protected function removeDir($dir){
         foreach (scandir($dir) as $item){
             if ($item == "." || $item == "..")
                 continue;
@@ -277,7 +275,7 @@ class qqFileUploader {
         }
         rmdir($dir);
     }
-
+*/
     /**
      * Converts a given size with units to bytes.
      * @param string $str

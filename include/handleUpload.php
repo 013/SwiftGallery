@@ -14,9 +14,6 @@ $uploader->sizeLimit = 20 * 1024 * 1024;
 // Specify the input name set in the javascript.
 $uploader->inputName = 'qqfile';
 
-// If you want to use resume feature for uploader, specify the folder to save parts.
-$uploader->chunksFolder = 'chunks';
-
 // Call handleUpload() with the name of the folder, relative to PHP's getcwd()
 $result = $uploader->handleUpload('../images');
 
@@ -30,12 +27,10 @@ $ext = $uploader->getUploadExt();
 
 $x = substr($result['md5'], 0, 4) . '/'. substr($result['md5'], 4, 8).$ext;
 
-//exec('./thumb.py ../images/'.$x.' '.$ext, $output);
 $command = './thumb.py ../images/'.$x.' '.$ext;
-file_put_contents('log.txt', $command);
+//file_put_contents('log.txt', $command);
 
 exec($command);
-
 
 header("Content-Type: text/plain");
 echo json_encode($result);
