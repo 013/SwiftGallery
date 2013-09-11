@@ -8,7 +8,7 @@ define("HOMEPAGE_SORT", "top_daily"); //top_daily, top_weekly, top_monthly, newe
 
 define("PRODUCT_NAME", "Swiftler");
 
-require("include/main.php");
+include("include/main.php");
 
 ?>
 
