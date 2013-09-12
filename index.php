@@ -13,6 +13,9 @@ switch($action) {
 	case 'view':
 		viewImg($_GET['id']);
 		break;
+	case 'register':
+		register();
+		break;
 	default:
 		homepage();
 }
@@ -29,11 +32,19 @@ function homepage() {
 
 function upload() {
 	$results['pageTitle'] = "Upload";
-	require("include/upload.php");
+	require("include/upload2.php");
 }
 
 function viewImg($id) {
 	$results = array();
+}
+
+function register() {
+	$results = array();
+
+	$results['pageTitle'] = "Register";
+
+	require("include/register.php");
 }
 
 ?>

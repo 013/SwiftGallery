@@ -6,8 +6,8 @@
 <script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
 </head>
 <body>
-<div class="container">
-	<nav class="navbar navbar-default" role="navigation">
+<nav class="navbar navbar-default" role="navigation">
+	<div class="container">
 		<div class="navbar-header">
 			<a class="navbar-brand" href="#"><?=PRODUCT_NAME;?></a>
 		</div>
@@ -17,6 +17,9 @@
 			</div>
 			<button type="submit" class="btn btn-ds">Search</button>
 		</form>
-	</nav>
+	</div>
+</nav>
+	
+<div class="container">
 	<div class="row">
 
