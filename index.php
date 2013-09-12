@@ -1,5 +1,4 @@
 <?php
-
 // Move outside of web directory
 require("include/config.php");
 
@@ -16,6 +15,9 @@ switch($action) {
 	case 'register':
 		register();
 		break;
+	case 'user':
+		userArea($_GET['id']);
+		break;
 	default:
 		homepage();
 }
@@ -28,6 +30,15 @@ function homepage() {
 	$results['pageTitle'] = "Gallery";
 
 	require("include/homepage.php");
+}
+
+function userArea($id) {
+	echo "You're viewing: ";
+	if ($id == $_SESSION['uid']) {
+		echo 'Your page';
+	} else {
+		echo $id;
+	}
 }
 
 function upload() {
