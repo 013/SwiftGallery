@@ -4,58 +4,88 @@
 require('include/password.php');
 require('include/config.php');
 
-if (isset($_POST)) {
+session_start();
+$reg = false;
+if (isset($_POST['username'])) {
 	//var_dump($_POST);
-	$email =    $_POST['email'];
+	if (isset($_POST['email'])) {
+		$email =    $_POST['email'];
+		$reg = true;
+	}
 	$username = $_POST['username'];
 	$password = $_POST['password'];
 	$rememberMe = isset($_POST['remember']);
 } else {
-	header('Location: /');
+	header('Location: index.php');
 	die();
 }
 
- /*
-  * Client side authentication would have found duplicate usernames / email addresses
-  * Use userExists() function to search DB for username of email - Don't trust the users
-  *
-  */
-//die();
-if (userExists($username, $password)) die();
 
-// Insert new user and log them in
-echo "not dead yet";
-
-
-/*
- * Set cost lower to increase time for hashing (less secure)
- * http://uk3.php.net/password_hash
- *
- */
-$options = [
-	'cost' => 12,
-];
-
-$password = password_hash($password, PASSWORD_BCRYPT, $options);
-
-$userID = insertUser($email, $username, $password, '');
-
-session_start();
-$_SESSION['uid'] = $userID;
-header('Location: ?action=user&id='.$_SESSION['uid']);
-//echo $_SESSION['uid'];
+if ($reg) {
+	/*
+	  * Client side authentication would have found duplicate usernames / email addresses
+	  * Use userExists() function to search DB for username of email - Don't trust the users
+	  *
+	  */
+	
+	if (userExists($username, $email)) {
+		$Ge = '';
+		if (strlen($email) > 1) {
+			$Ge = "&email=".$email;
+		}
+		header("Location: index.php?action=register&username=$username$Ge");
+	} else {
+		
+		// Insert new user and log them in
+		
+		/*
+		 * Set cost lower to increase time for hashing (less secure)
+		 * http://uk3.php.net/password_hash
+		 *
+		 */
+		$options = [
+			'cost' => 12,
+		];
+		
+		$password = password_hash($password, PASSWORD_BCRYPT, $options);
+		$userID = insertUser($email, $username, $password, '');
+		
+		
+		$_SESSION['uid'] = $userID;
+		header('Location: ?action=user&id='.$_SESSION['uid']);
+	}
+} else {
+	/*
+	 * If the user has simply logged in
+	 *
+	 */
+	
+	//diie();p
+	getUserHash('ryan');
+	if (password_verify($password, getUserHash($username))) {
+		$_SESSION['uid'] = getUserID($username);
+		header('Location: index.php?action=user&id='.$_SESSION['uid']);
+	} else {
+		header('Location: index.php?action=login&username='.$username.'&incorrect=true');
+		//echo 'Invalid password';
+	}
+}
 
 function userExists($username, $email) {
-	$conn = new PDO ('mysql:host=localhost;dbname=gallery', 'gallery_user', '48sVTM2jFChGW2Du');
-	$sql = "SELECT id FROM users WHERE email = :email OR username = :username";
+	$conn = new PDO(DB_DSN, DB_USERNAME, DB_PASSWORD);
+	$sql = "SELECT * FROM users WHERE username = :username";
 	$st = $conn->prepare($sql);
-	$st->bindValue(":email", $email, PDO::PARAM_STR);
+	//$st->bindValue(":email", $email, PDO::PARAM_STR);
 	$st->bindValue(":username", $username, PDO::PARAM_STR);
 	$st->execute();
+	
 	$row = $st->fetch();
 	$conn = null;
-	if ($row) return True;
-	return False;
+	if (strlen($row['email'] > 1) || isset($row['username'])) {
+		return true;
+	} else {
+		return false;
+	}
 }
 
 function insertUser($email, $username, $password, $session) {
@@ -73,8 +103,28 @@ function insertUser($email, $username, $password, $session) {
 	return $id;
 }
 
-function hashPassword($plaintext) {
-	echo "";
+function getUserHash($username) {
+	$conn = new PDO(DB_DSN, DB_USERNAME, DB_PASSWORD);
+	$sql = "SELECT password FROM users WHERE username = :username";
+	$st = $conn->prepare($sql);
+	$st->bindValue(":username", $username, PDO::PARAM_STR);
+	$st->execute();
+	
+	$row = $st->fetch();
+	$conn = null;
+	return $row['password'];
+}
+
+function getUserID($username) {
+	$conn = new PDO(DB_DSN, DB_USERNAME, DB_PASSWORD);
+	$sql = "SELECT id FROM users WHERE username = :username";
+	$st = $conn->prepare($sql);
+	$st->bindValue(":username", $username, PDO::PARAM_STR);
+	$st->execute();
+	
+	$row = $st->fetch();
+	$conn = null;
+	return $row['id'];
 }
 
 ?>

@@ -1,4 +1,17 @@
-<?php include "include/header.php" ?>
+<?php 
+include "include/header.php";
+
+ /*
+  * Check if user is logged in
+  * If not, inform them with a small notification
+  *
+  */
+
+if (!isset($_SESSION['uid'])) {
+	$message = "<small>You are not currently logged in. (<a href=\"index.php?action=login\">Login</a>/<a href=\"index.php?action=register\">Register</a>)</small>";
+} else { $message = ""; }
+
+?>
 <style>
 .form-signin {
 	max-width: 530px;
@@ -36,21 +49,20 @@
 	<div class="form-group">
 		<input type="text" class="form-control" id="title1" placeholder="Title" name="title1">
 	</div>
-
-<div class="radio">
-<label>
-<input type="radio" name="optionsRadios" id="optionsRadios1" value="option1" checked>
-Group images as album
-</label>
-</div>
 <div class="radio">
 <label>
 <input type="radio" name="optionsRadios" id="optionsRadios2" value="option2">
 Upload as individual images
 </label>
 </div>
-
-	<button class="btn btn-lg btn-primary btn-block" type="submit">Upload</button>
-	</form>
+<div class="radio">
+<label>
+<input type="radio" name="optionsRadios" id="optionsRadios1" value="option1" checked>
+Group images as album
+</label>
+</div>
+<button class="btn btn-lg btn-primary btn-block" type="submit">Upload</button>
+<?=$message; ?>
+</form>
 
 <?php include "include/footer.php" ?>

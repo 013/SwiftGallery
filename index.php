@@ -15,6 +15,12 @@ switch($action) {
 	case 'register':
 		register();
 		break;
+	case 'login':
+		login();
+		break;
+	case 'logout':
+		logout();
+		break;
 	case 'user':
 		userArea($_GET['id']);
 		break;
@@ -33,12 +39,8 @@ function homepage() {
 }
 
 function userArea($id) {
-	echo "You're viewing: ";
-	if ($id == $_SESSION['uid']) {
-		echo 'Your page';
-	} else {
-		echo $id;
-	}
+	$results['pageTitle'] = "User: ".htmlspecialchars($id);//.getUsername($id);
+	require("include/user.php");
 }
 
 function upload() {
@@ -52,10 +54,23 @@ function viewImg($id) {
 
 function register() {
 	$results = array();
-
 	$results['pageTitle'] = "Register";
 
 	require("include/register.php");
+}
+
+function login() {
+	$results = array();
+	$results['pageTitle'] = "Login";
+
+	require("include/login.php");
+}
+
+function logout() {
+	session_start();
+	unset($_SESSION['uid']);
+	session_destroy();
+	header('Location: index.php');
 }
 
 ?>

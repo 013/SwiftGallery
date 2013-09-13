@@ -1,19 +1,4 @@
-<?php
-include "include/header.php";
-$username = "";
-$email = "";
-$message = "";
-if (isset($_GET['username'])) {
-	/*
-	 * If the username is set, than it must alreadyt exist
-	 * $_GET['email'] may also be set, but it is not required
-	 *
-	 */
-	 $username = htmlentities($_GET['username']);
-	 if (isset($_GET['email'])) $email = htmlentities($_GET['email']);
-	 $message = "<small>This username/email already exists</small>";
-}
-?>
+<?php include "include/header.php" ?>
 <style>
 .form-signin {
 	max-width: 330px;
@@ -50,16 +35,34 @@ if (isset($_GET['username'])) {
 	border-top-right-radius: 0;
 }
 </style>
+<!--
+	<form class="form-signin">
+	<h2 class="form-signin-heading">Sign in</h2>
+	<input type="text" class="form-control" placeholder="Username" autofocus>
+	<input type="password" class="form-control" placeholder="Password">
+	<label class="checkbox">
+	<input type="checkbox" value="remember-me"> Remember me
+	</label>
+	<button class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
+	</form>
+-->
+<?
+$message = "";
+$username = "";
+if (isset($_GET['incorrect'])) {
+	$username = htmlentities($_GET['username']);
+	$message = "<small>Username or password incorrect (<a href=\"reset\">Forgot Password</a>)";
+}
+?>
 	<form class="form-signin" action="confirm.php" method="post">
-	<h2 class="form-signin-heading">Register</h2>
-	<input type="text" class="form-control" placeholder="Email (Optional)" name="email" value="<?=$email; ?>">
-	<input type="text" class="form-control" placeholder="Username" name="username" style="border-radius: 0;" value="<?=$username; ?>" autofocus>
+	<h2 class="form-signin-heading">Login</h2>
+	<input type="text" class="form-control" placeholder="Username" name="username" value="<?=$username; ?>" autofocus>
 	<input type="password" class="form-control" placeholder="Password" name="password">
 	<label class="checkbox">
 	<input type="checkbox" value="0" name="remember"> Remember me
 	</label>
+	<button class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
 	<?=$message; ?>
-	<button class="btn btn-lg btn-primary btn-block" type="submit">Sign Up</button>
 	</form>
 
 <?php include "include/footer.php" ?>

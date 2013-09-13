@@ -10,8 +10,17 @@
 <nav class="navbar navbar-default" role="navigation">
 	<div class="container">
 		<div class="navbar-header">
-			<a class="navbar-brand" href="#"><?=PRODUCT_NAME;?></a>
+			<a class="navbar-brand" href="index.php"><?=PRODUCT_NAME;?></a>
 		</div>
+		<ul class="nav navbar-nav">
+			<? if (isset($_SESSION['uid'])) { ?>
+			<li><a href="?action=user&id=<?=$_SESSION['uid'];?>">User Area</a></li>
+			<? } else { ?>
+			<li><a href="?action=login">Login</a></li>
+        	<li><a href="?action=register">Register</a></li>
+	      	<? } ?>
+			<li><a href="?action=upload">Upload</a></li>
+		</ul>
 		<form class="navbar-form navbar-right" role="search">
 			<div class="form-group">
 				<input type="text" class="form-control" placeholder="Search">
