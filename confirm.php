@@ -1,5 +1,12 @@
 <?php
 
+ /*
+  * Serverside validation of login and registration
+  *
+  *
+  *
+  */
+
 // https://github.com/ircmaxell/password_compat
 require('include/password.php');
 require('include/config.php');
@@ -20,6 +27,19 @@ if (isset($_POST['username'])) {
 	die();
 }
 
+/*
+ * If the length of the username/password is <1 
+ * Send them back
+ *
+ */
+
+if (strlen($username) <= 1 || strlen($password) <= 1) {
+	if ($reg) {
+		header('Location: index.php?action=register');
+	} else {
+		header('Location: index.php?action=login');
+	}
+}
 
 if ($reg) {
 	/*

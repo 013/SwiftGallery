@@ -139,7 +139,7 @@ class Image {
 		$this->id = $conn->lastInsertId();
 		$conn = null;
 	}
-	
+	/*
 	private function hashImage() {
 		//$imagePath = "//tmp location 
 		$hash = md5_file($imagePath); 
@@ -155,10 +155,88 @@ class Image {
 	public function delete() {
 		;
 	}
+	*/
 }
 
-class user extends gallery {
-	//$username;
+class User {
+	public static function getUsername($id) {
+		// Return the username of an id
+		$conn = new PDO (DB_DSN, DB_USERNAME, DB_PASSWORD);
+		$sql = "SELECT username FROM users WHERE ID = :id";
+		$st = $conn->prepare($sql);
+		$st->bindValue(":id", $id, PDO::PARAM_INT);
+		$st->execute();
+		$row = $st->fetch();
+		$conn = null;
+
+		if (isset($row['username'])) return $row['username'];
+		return false;
+	}
+
+	public static function keyPair($username) {
+		/*
+		$config = array('private_key_bits' => 512);
+		
+		// Create the keypair
+		$res = openssl_pkey_new($config);
+		
+		// Get private key
+		openssl_pkey_export($res, $privkey);
+		
+		// Get public key
+		$pubkey = openssl_pkey_get_details($res);
+		$pubkey = $pubkey["key"];
+		
+		// Encrypt the data to $encrypted using the public key
+		openssl_public_encrypt($username, $encrypted, $pubkey);
+		
+		// Insert $pubkey, $privkey and $encrypted into temp DB
+		// Decrypt the data using the private key and store the results in $decrypted
+		// openssl_private_decrypt($encrypted, $decrypted, $privkey);
+		*/
+		
+		$options = [
+			'cost' => 1,//2,
+		];
+		
+		$pubkey = password_hash($username, PASSWORD_BCRYPT, $options);
+		$privkey = password_hash($pubkey, PASSWORD_BCRYPT, $options);
+
+		$conn = new PDO(DB_DSN, DB_USERNAME, DB_PASSWORD);
+		$sql = "INSERT INTO tempKey ( pubkey, privkey, data ) VALUES ( :pubkey, :privkey, :data)";
+		$st = $conn->prepare($sql);
+		$st->bindValue(":pubkey", $pubkey, PDO::PARAM_STR);
+		$st->bindValue(":privkey", $privkey, PDO::PARAM_STR);
+		$st->bindValue(":data", $username, PDO::PARAM_STR);
+		$st->execute();
+		
+		$id = $conn->lastInsertId();
+		$conn = null;
+
+		$field = "<input type='hidden' name='sks' id='sks' value='$pubkey'>";// style=\"display: none;\" hidden>";
+		
+		return $field;
+	}
+
+	public static function getHashedName($pubkey) {
+		$conn = new PDO(DB_DSN, DB_USERNAME, DB_PASSWORD);
+		$sql = "SELECT * FROM tempKey WHERE pubkey = :pubkey";
+		$st = $conn->prepare($sql);
+		$st->bindValue(":pubkey", $pubkey, PDO::PARAM_STR);
+		$st->execute();
+		$row = $st->fetch();
+		
+		$conn = null;
+		
+		return $row['data'];
+	}
+
+	/*
+	 * echo keyPair("ryan");
+	 * getHashedName("$2y$12\$AC2qoRXTIg3AJ6Y3VRDTEe4Xo/eCVAeWtWZOrz6jupZzs8WCEGHdS");
+	 *
+	 */
+	
 }
 
 ?>

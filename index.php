@@ -6,7 +6,6 @@ $action = isset($_GET['action']) ? $_GET['action'] : "";
 
 switch($action) {
 	case 'upload':
-		//echo "someaction";//func();
 		upload();
 		break;
 	case 'view':
