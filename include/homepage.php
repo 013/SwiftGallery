@@ -1,8 +1,9 @@
 <?php include "include/header.php" ?>
 	<div class="Collage">
 <?php
+$imageTypes = array('image/jpeg'=>'.jpg','image/png'=>'.png');
 foreach($results['images'] as $image) { ?>
-	<a href="?imgid=<?=$image->id;?>"><img class="abc" src="images/<?=substr($image->imageHash, 0,4).'/'.substr($image->imageHash, 4,8).'_thumb'.$image->imageTypes[$image->mimeType];?>">
+	<a href="?action=view&id=<?=$image->id;?>"><img class="abc" src="images/<?=substr($image->imageHash, 0,4).'/'.substr($image->imageHash, 4,8).'_thumb'.$imageTypes[$image->mimeType];?>">
 </a>
 
 <? } 

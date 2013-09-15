@@ -29,7 +29,7 @@ switch($action) {
 
 function homepage() {
 	$results = array();
-	$data = Image::getList(10);
+	$data = Image::getList(100);
 	$results['images'] = $data['results'];
 	$results['totalRows'] = $data['totalRows'];
 	$results['pageTitle'] = "Gallery";
@@ -49,6 +49,13 @@ function upload() {
 
 function viewImg($id) {
 	$results = array();
+	$results['pageTitle'] = "Viewing".htmlspecialchars($id);
+	$image = Image::getById($id);
+	//var_dump($x);
+	require("include/header.php");
+	$html = "<img src=\"images/".substr($image->imageHash, 0,4).'/'.substr($image->imageHash, 4,8).$image->imageTypes[$image->mimeType]."\">";
+	echo $html;
+	require("include/footer.php");
 }
 
 function register() {

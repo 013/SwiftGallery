@@ -67,7 +67,7 @@ class Image {
 	public $album = null;
 	public $tags = null;
 	public $published = null;
-	public $imageTypes = array('image/JPEG'=>'.jpg','image/PNG'=>'.png');
+	public $imageTypes = array('image/jpeg'=>'.jpg','image/png'=>'.png');
 
 	public function __construct($data=array()) {
 		if (isset($data['id'])) $this->id = (int) $data['id'];
@@ -137,7 +137,7 @@ class Image {
 		$sql = "INSERT INTO images ( user, uploadDate, title, imageHash, mimeType, album, tags, votes, views, published ) VALUES ( :user, FROM_UNIXTIME(:uploadDate), :title, :imageHash, :mimeType, :album, :tags, :votes, :views, :published)";
 		$st = $conn->prepare($sql);
 		$st->bindValue(":user", $this->user, PDO::PARAM_STR);
-		$st->bindValue(":uploadDate", $this->uploadDate, PDO::PARAM_STR);
+		$st->bindValue(":uploadDate", time(), PDO::PARAM_STR);//his->uploadDate, PDO::PARAM_STR);
 		$st->bindValue(":title", $this->title, PDO::PARAM_STR);
 		$st->bindValue(":imageHash", $this->imageHash, PDO::PARAM_STR);
 		$st->bindValue(":mimeType", $this->mimeType, PDO::PARAM_STR);

@@ -26,7 +26,8 @@ $(document).ready(function() {
 	function collage() {
 		$('.Collage').removeWhitespace().collagePlus({
 			'targetHeight' : 250,
-			'fadeSpeed' : 2000
+			'fadeSpeed' : 2000,
+			'allowPartialLastRow' : true
 		});
 	};
 
