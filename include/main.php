@@ -36,14 +36,14 @@ https://peercdn.com/docs
 
 */
 
-
+/*
 class gallery {
 	function __construct() {
 		$this->$a = '';	
 	}
 
 	private function buildTables() {
-		/* create database gallery */
+		// create database gallery
 		$sql = "CREATE TABLE";
 	}
 
@@ -56,7 +56,7 @@ class gallery {
 		// date submitted epoch
 	}
 }
-
+*/
 class Image {
 	public $id = null;
 	public $user = null;
@@ -78,6 +78,8 @@ class Image {
 		if (isset($data['mimeType'])) $this->mimeType = $data['mimeType'];
 		if (isset($data['album'])) $this->album = $data['album'];
 		if (isset($data['tags'])) $this->tags = $data['tags'];
+		if (isset($data['votes'])) $this->votes = $data['votes'];
+		if (isset($data['views'])) $this->views = $data['views'];
 		if (isset($data['published'])) $this->published = (int) $data['published'];
 		if (isset($data['pageTitle'])) $this->pageTitle = "Gallery";
 	}
@@ -132,13 +134,33 @@ class Image {
 	public function insert() {
 		//not finished
 		$conn = new PDO(DB_DSN, DB_USERNAME, DB_PASSWORD);
-		$sql = "INSERT INTO images ( title, etc ) VALUES ( FROM_UNIXTIME(:uploadDate), :title, :etc)";
+		$sql = "INSERT INTO images ( user, uploadDate, title, imageHash, mimeType, album, tags, votes, views, published ) VALUES ( :user, FROM_UNIXTIME(:uploadDate), :title, :imageHash, :mimeType, :album, :tags, :votes, :views, :published)";
 		$st = $conn->prepare($sql);
+		$st->bindValue(":user", $this->user, PDO::PARAM_STR);
+		$st->bindValue(":uploadDate", $this->uploadDate, PDO::PARAM_STR);
 		$st->bindValue(":title", $this->title, PDO::PARAM_STR);
+		$st->bindValue(":imageHash", $this->imageHash, PDO::PARAM_STR);
+		$st->bindValue(":mimeType", $this->mimeType, PDO::PARAM_STR);
+		$st->bindValue(":album", $this->album, PDO::PARAM_STR);
+		$st->bindValue(":tags", $this->tags, PDO::PARAM_STR);
+		$st->bindValue(":votes", $this->votes, PDO::PARAM_STR);
+		$st->bindValue(":views", $this->views, PDO::PARAM_STR);
+		$st->bindValue(":published", $this->published, PDO::PARAM_STR);
 		$st->execute();
 		$this->id = $conn->lastInsertId();
 		$conn = null;
+	}	
+	
+	public static function handleTrueUpload($formData) {
+
+		/*
+		 * When the user actually clicks the 'Upload' button
+		 * each image $$ set published =1, if album set album =1
+		 * 
+		 */
+
 	}
+
 	/*
 	private function hashImage() {
 		//$imagePath = "//tmp location 
@@ -196,7 +218,7 @@ class User {
 		*/
 		
 		$options = [
-			'cost' => 1,//2,
+			'cost' => 12,
 		];
 		
 		$pubkey = password_hash($username, PASSWORD_BCRYPT, $options);

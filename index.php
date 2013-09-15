@@ -44,7 +44,7 @@ function userArea($id) {
 
 function upload() {
 	$results['pageTitle'] = "Upload";
-	require("include/upload2.php");
+	require("include/upload.php");
 }
 
 function viewImg($id) {

@@ -1,5 +1,5 @@
 <?php
-
+require('configShort.php');
 class qqFileUploader {
 
     public $allowedExtensions = array();
@@ -9,13 +9,14 @@ class qqFileUploader {
     protected $uploadName;
 	protected $uploadHash;
 	protected $uploadExt;
+	protected $uploadType;
 
     function __construct(){
         $this->sizeLimit = $this->toBytes(ini_get('upload_max_filesize'));
     }
 
 	public function hashExists($imageHash) {
-		$conn = new PDO ('mysql:host=localhost;dbname=gallery', 'gallery_user', '48sVTM2jFChGW2Du');
+		$conn = new PDO(DB_DSN, DB_USERNAME, DB_PASSWORD);
 		$sql = "SELECT * FROM images WHERE imageHash = :hash";
 		$st = $conn->prepare($sql);
 		$st->bindValue(":hash", $imageHash, PDO::PARAM_STR);
@@ -49,12 +50,15 @@ class qqFileUploader {
 	public function getUploadExt() {
 		return $this->uploadExt;
 	}
+	public function getUploadType() {
+		return $this->uploadType;
+	}
     /**
      * Process the upload.
      * @param string $uploadDirectory Target directory.
      * @param string $name Overwrites the name of the file.
      */
-    public function handleUpload($uploadDirectory, $name = null){
+    public function handleUpload($uploadDirectory, $username, $name = null){
 
        // Check that the max upload size specified in class configuration does not
         // exceed size allowed by server config
@@ -94,6 +98,7 @@ class qqFileUploader {
 		$dir1 = substr($md5, 0, 4);	
 		$this->uploadHash = $md5;
 		$this->uploadExt = $ext[$type];
+		$this->uploadType = $type;
 		mkdir('/usr/share/nginx/www/SwiftGallery/images/'.$dir1, 0755);
 		$size = $file['size'];
 
