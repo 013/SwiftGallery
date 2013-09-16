@@ -36,7 +36,11 @@ $type = $uploader->getUploadType();
 $x = substr($result['md5'], 0, 4) . '/'. substr($result['md5'], 4, 8).$ext;
 
 $command = './thumb.py ../images/'.$x.' '.$ext;
+exec($command);
 //file_put_contents('log.txt', $command);
+
+$x = '/usr/share/nginx/www/SwiftGallery/images/'.substr($result['md5'], 0, 4) . '/'. substr($result['md5'], 4, 8).'_thumb'.$ext;
+$attr = getImageSize($x)[3];
 
 $values = array(
 	'user' => $username,
@@ -44,6 +48,7 @@ $values = array(
 	'title' => $result['uploadName'],
 	'imageHash' => $result['md5'],
 	'mimeType' => $type,
+	'attr' => $attr,
 	'album' => 0,
 	'tags' => '',
 	'votes' => 0,
@@ -56,7 +61,6 @@ $image = new Image;
 $image->storeFormValues( $values );
 $image->insert();
 //
-exec($command);
 
 header("Content-Type: text/plain");
 echo json_encode($result);

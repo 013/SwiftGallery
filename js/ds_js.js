@@ -25,7 +25,7 @@ $(document).ready(function() {
 
 	function collage() {
 		$('.Collage').removeWhitespace().collagePlus({
-			'targetHeight' : 250,
+			'targetHeight' : 270,
 			'fadeSpeed' : 2000,
 			'allowPartialLastRow' : true
 		});

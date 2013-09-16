@@ -129,6 +129,51 @@ Group images as album
 </form>
 
 
+<!--  ######  -->
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+<script type="text/javascript">
+
+var active = false;
+
+$(document).ready(function() {
+	$('.title').click(function() {
+		if (!active) {
+			$(this).html("<input type=\"text\" id=\"fooI\" value=\""+$(this).html()+"\">");
+			$('#fooI').focus();
+			active = true;
+		}
+	});
+
+	$('.title').focusout(function() {
+		hiddenTitle = "#title" + $(this).attr('class').split(' ')[1]
+		active = false;
+		$(hiddenTitle).val($('#fooI').val());
+		$(this).html($('#fooI').val());
+	});
+});
+
+</script>
+<!--
+<span id="title3" class="title 3" >hi</span>
+<input name="title3" type="hidden" id="title3" value="hi">
+
+
+<span id="foo" class="title 4" >hi</span>
+<input name="title4" type="hidden" id="title4" value="hi">
+
+
+<span id="foo" class="title 5" >hi</span>
+<input name="title5" type="hidden" id="title5" value="hi">
+-->
+<!-- #######  -->
+
+
+
+
+
+
+
+
 
 
 
@@ -151,11 +196,14 @@ $(document).ready(function() {
 		'<pre class="qq-upload-drop-area span12"><span>{dragZoneText}</span></pre>' +
 		'<div class="qq-upload-button btn btn-success" style="width: auto;">{uploadButtonText}</div>' +
 		'<span class="qq-drop-processing"><span>{dropProcessingText}</span><span class="qq-drop-processing-spinner"></span></span>' +
-		'<ul class="qq-upload-list" style="margin-top: 10px; text-align: center;"></ul>' +
+		'<ul class="qq-upload-list" style="margin-top: 10px; text-align: center; "></ul>' +
 		'</div>',
 		classes: {
 			success: 'alert alert-success',
 			fail: 'alert alert-error'
+		},
+		editFilename: {
+			enabled: false
 		},
 		deleteFile: {
 			enabled: false,//true,
@@ -163,7 +211,8 @@ $(document).ready(function() {
 		},
 		retry: {
 			enableAuto: true
-		}
+		},
+		autoUpload: true
 	}).on('complete', function(event, id, fileName, responseJSON) {
 		if (responseJSON.success) {
 			// Append image to somewhere in form

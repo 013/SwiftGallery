@@ -67,7 +67,7 @@ class Image {
 	public $album = null;
 	public $tags = null;
 	public $published = null;
-	public $imageTypes = array('image/jpeg'=>'.jpg','image/png'=>'.png');
+	public $imageTypes = array('image/jpeg'=>'.jpg','image/png'=>'.png', 'image/gif'=>'.gif');
 
 	public function __construct($data=array()) {
 		if (isset($data['id'])) $this->id = (int) $data['id'];
@@ -76,6 +76,7 @@ class Image {
 		if (isset($data['title'])) $this->title = $data['title'];
 		if (isset($data['imageHash'])) $this->imageHash = $data['imageHash'];
 		if (isset($data['mimeType'])) $this->mimeType = $data['mimeType'];
+		if (isset($data['attr'])) $this->attr = $data['attr'];
 		if (isset($data['album'])) $this->album = $data['album'];
 		if (isset($data['tags'])) $this->tags = $data['tags'];
 		if (isset($data['votes'])) $this->votes = $data['votes'];
@@ -112,7 +113,7 @@ class Image {
 	public static function getList($numRows=100, $order="uploadDate DESC") {
 		// Get front page images
 		$conn = new PDO(DB_DSN, DB_USERNAME, DB_PASSWORD);
-		$sql = "SELECT SQL_CALC_FOUND_ROWS *, UNIX_TIMESTAMP(uploadDate) as uploadDate FROM images ORDER BY uploadDate DESC LIMIT :numRows";
+		$sql = "SELECT SQL_CALC_FOUND_ROWS *, UNIX_TIMESTAMP(uploadDate) as uploadDate FROM images WHERE published = 1 ORDER BY uploadDate DESC LIMIT :numRows";
 
 		$st = $conn->prepare($sql);
 		$st->bindValue(":numRows", $numRows, PDO::PARAM_INT);
@@ -134,13 +135,14 @@ class Image {
 	public function insert() {
 		//not finished
 		$conn = new PDO(DB_DSN, DB_USERNAME, DB_PASSWORD);
-		$sql = "INSERT INTO images ( user, uploadDate, title, imageHash, mimeType, album, tags, votes, views, published ) VALUES ( :user, FROM_UNIXTIME(:uploadDate), :title, :imageHash, :mimeType, :album, :tags, :votes, :views, :published)";
+		$sql = "INSERT INTO images ( user, uploadDate, title, imageHash, mimeType, attr, album, tags, votes, views, published ) VALUES ( :user, FROM_UNIXTIME(:uploadDate), :title, :imageHash, :mimeType, :attr, :album, :tags, :votes, :views, :published)";
 		$st = $conn->prepare($sql);
 		$st->bindValue(":user", $this->user, PDO::PARAM_STR);
 		$st->bindValue(":uploadDate", time(), PDO::PARAM_STR);//his->uploadDate, PDO::PARAM_STR);
 		$st->bindValue(":title", $this->title, PDO::PARAM_STR);
 		$st->bindValue(":imageHash", $this->imageHash, PDO::PARAM_STR);
 		$st->bindValue(":mimeType", $this->mimeType, PDO::PARAM_STR);
+		$st->bindValue(":attr", $this->attr, PDO::PARAM_STR);
 		$st->bindValue(":album", $this->album, PDO::PARAM_STR);
 		$st->bindValue(":tags", $this->tags, PDO::PARAM_STR);
 		$st->bindValue(":votes", $this->votes, PDO::PARAM_STR);

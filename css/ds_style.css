@@ -13,16 +13,17 @@
 
 /* Override base .btn styles */
 /* Apply text and background changes to three key states: default, hover, and active (click). */
+/*
 .btn-ds,
 .btn-ds:hover,
 .btn-ds:active {
 	color: white;
-	/*text-shadow: 0 -1px 0 rgba(0, 159, 243);*/
+	/*text-shadow: 0 -1px 0 rgba(0, 159, 243);
 	background-color: #f49ff3;
 }
 
 /* Apply the custom-colored gradients */
-/* Note: you'll need to include all the appropriate gradients for various browsers and standards. */
+/* Note: you'll need to include all the appropriate gradients for various browsers and standards. 
 .btn-ds {
 	background-repeat: repeat-x;
 	background-color: #f49ff3;
@@ -30,7 +31,7 @@
 }
 
 /* Set the hover state */
-/* An easy hover state is just to move the gradient up a small amount. Add other embellishments as you see fit. */
+/* An easy hover state is just to move the gradient up a small amount. Add other embellishments as you see fit. 
 .btn-ds:hover {
 	  color: white;
 	  background-position: 0 -15px;
@@ -42,7 +43,7 @@
 	box-shadow: 0 1px 1px rgba(0, 0, 0, 0.075) inset, 0 0 8px rgba(244, 159, 243, 0.6);
 	outline: 0 none;
 }
-/* 234-129-229 */
+/* 234-129-229 
 .row {
 	margin-left: 0px;
 	margin-right: 0px;
