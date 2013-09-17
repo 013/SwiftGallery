@@ -31,5 +31,33 @@ CREATE TABLE IF NOT EXISTS `images` (
 `published` int(1) NOT NULL DEFAULT '1',
 PRIMARY KEY (`id`),
 UNIQUE KEY `id` (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=16 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
 
+
+CREATE TABLE IF NOT EXISTS `album` (
+`id` int(11) NOT NULL AUTO_INCREMENT,
+`owner` varchar(32) NOT NULL,
+`albumHash` varchar(64) NOT NULL,
+`votes` int(11) NOT NULL,
+`views` int(11) NOT NULL,
+`published` int(11) NOT NULL,
+PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
+
+CREATE TABLE IF NOT EXISTS `tempKey` (
+`id` int(11) NOT NULL AUTO_INCREMENT,
+`pubkey` varchar(512) NOT NULL,
+`privkey` varchar(512) NOT NULL,
+`data` varchar(512) NOT NULL,
+PRIMARY KEY (`id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
+
+CREATE TABLE IF NOT EXISTS `users` (
+`id` int(11) NOT NULL AUTO_INCREMENT,
+`email` varchar(64) NOT NULL,
+`username` varchar(64) NOT NULL,
+`password` varchar(64) NOT NULL,
+`session` varchar(64) NOT NULL,
+`locked` int(11) NOT NULL,
+PRIMARY KEY (`id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;

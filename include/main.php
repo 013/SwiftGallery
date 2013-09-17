@@ -113,7 +113,7 @@ class Image {
 	public static function getList($numRows=100, $order="uploadDate DESC") {
 		// Get front page images
 		$conn = new PDO(DB_DSN, DB_USERNAME, DB_PASSWORD);
-		$sql = "SELECT SQL_CALC_FOUND_ROWS *, UNIX_TIMESTAMP(uploadDate) as uploadDate FROM images WHERE published = 1 ORDER BY uploadDate DESC LIMIT :numRows";
+		$sql = "SELECT SQL_CALC_FOUND_ROWS *, UNIX_TIMESTAMP(uploadDate) as uploadDate FROM images WHERE published = 1 ORDER BY id DESC LIMIT :numRows";
 
 		$st = $conn->prepare($sql);
 		$st->bindValue(":numRows", $numRows, PDO::PARAM_INT);

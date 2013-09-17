@@ -92,11 +92,11 @@ if (!isset($_SESSION['uid'])) {
 
 
 
-	<form class="form-upload" id="foo">
+	<form class="form-upload" id="foo" method="POST" action="include/uploadconf.php">
 	<h2 class="form-upload-heading">Upload</h2>
 <?=$hiddenField; ?>
 	<div class="form-group">
-		<input type="text" class="form-control" id="title1" placeholder="Title" name="title1">
+		<input type="text" class="form-control" id="albumtitle" placeholder="Album Title" name="albumtitle" style="display: none;">
 	</div>
 
 <div id="fine-uploader">
@@ -114,13 +114,13 @@ if (!isset($_SESSION['uid'])) {
 
 <div class="radio">
 <label>
-<input type="radio" name="optionsRadios" id="optionsRadios2" value="option2" checked>
+<input type="radio" name="albumradio" id="optionsRadios2" value="0" checked>
 Upload as individual images
 </label>
 </div>
 <div class="radio">
 <label>
-<input type="radio" name="optionsRadios" id="optionsRadios1" value="option1">
+<input type="radio" name="albumradio" id="optionsRadios1" value="1">
 Group images as album
 </label>
 </div>
@@ -150,6 +150,14 @@ $(document).ready(function() {
 		$(hiddenTitle).val($('#fooI').val());
 		$(this).html($('#fooI').val());
 	});
+	$( "input[type='radio']" ).change(function() {
+		if( $( this ).val() == 0) {
+			$( "#albumtitle" ).fadeOut( 600 )
+		} else {
+			$( "#albumtitle" ).fadeIn( 600 )
+		}
+	});
+
 });
 
 </script>
@@ -199,7 +207,7 @@ $(document).ready(function() {
 		'<ul class="qq-upload-list" style="margin-top: 10px; text-align: center; "></ul>' +
 		'</div>',
 		classes: {
-			success: 'alert alert-success',
+			success: 'alert alert-success ',
 			fail: 'alert alert-error'
 		},
 		editFilename: {
@@ -216,21 +224,24 @@ $(document).ready(function() {
 	}).on('complete', function(event, id, fileName, responseJSON) {
 		if (responseJSON.success) {
 			// Append image to somewhere in form
-			$(this).append(
+			/*$(this).append(
 			'<img src="images/'
 			+responseJSON.md5.substring(0,4)+'/'+responseJSON.md5.substring(4,12)+'_thumb.'+fileName.split('.').reverse()[0]+
 			'" >'
-			);
-			addFormField(responseJSON.md5, responseJSON.uploadName)
+			);*/
+			
+			$( ".alert-success" ).fadeOut( 1600 )
+
+			addFormField(responseJSON.md5, fileName);//responseJSON.uploadName)
 		}
 	});
 
 
-
+/*
 	// variable to hold request
-	var request;
+	//var request;
 	// bind to the submit event of our form
-	$("#foo").submit(function(event){
+	//$("#foo").submit(function(event){
 	    // abort any pending request
 	    if (request) {
 	request.abort();
@@ -272,14 +283,14 @@ $(document).ready(function() {
 		// prevent default posting of form
 		event.preventDefault();
 	});
-
+*/
 });
 
 var next = 0;
 function addFormField(Tvalue, title){
 	var addto = "#field" + next;
 	next = next + 1;
-	var newIn = '<br /><br /><input id="field' + next + '" name="imgHash' + next + '" type="text" value="' + Tvalue + '">';
+	var newIn = '<br /><br /><input id="field' + next + '" name="imgHash' + next + '" type="hidden" value="' + Tvalue + '">';
 	newIn += '<br /><br /><input class="span3" id="title' + next + '" name="imgTitle' + next + '" type="text" value="' + title + '">';
 	var newInput = $(newIn);
 	$(addto).after(newInput);
