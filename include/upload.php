@@ -101,13 +101,13 @@ if (!isset($_SESSION['uid'])) {
 
 <div id="fine-uploader">
 </div>
-<input type="hidden" name="count" value="1" />
+<input type="hidden" name="count" value="1" id="count" />
 
 <div class="control-group" id="fields">
 <div class="controls" id="profs">
 <div class="input-append">
-<input id="field0" name="imageHash0" type="hidden" hidden>
-<input id="title0" name="imageTitle0" type="hidden" hidden>
+<!--<input id="field0" name="imageHash0" type="hidden" hidden>
+<input id="title0" name="imageTitle0" type="hidden" hidden>-->
 </div>
 </div>
 </div>
@@ -174,19 +174,6 @@ $(document).ready(function() {
 <input name="title5" type="hidden" id="title5" value="hi">
 -->
 <!-- #######  -->
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 <script src="js/jquery.fineuploader-3.8.2.min.js" type="text/javascript"></script>
 
@@ -288,16 +275,16 @@ $(document).ready(function() {
 
 var next = 0;
 function addFormField(Tvalue, title){
-	var addto = "#field" + next;
+	var addto = "#fields";// + next;
 	next = next + 1;
-	var newIn = '<br /><br /><input id="field' + next + '" name="imgHash' + next + '" type="hidden" value="' + Tvalue + '">';
-	newIn += '<br /><br /><input class="span3" id="title' + next + '" name="imgTitle' + next + '" type="text" value="' + title + '">';
+	var newIn = '<input id="field' + next + '" name="imgHash' + next + '" type="hidden" value="' + Tvalue + '">';
+	newIn += '<br /><input class="span3" id="title' + next + '" name="imgTitle' + next + '" type="text" value="' + title + '">';
+	newIn += '<br /><input class="span3" id="tag' + next + '" name="imgTag' + next + '" type="text" value="">';
 	var newInput = $(newIn);
 	$(addto).after(newInput);
 	$("#field" + next).attr('data-source',$(addto).attr('data-source'));
 	$("#count").val(next);
 }
-
 
 </script>
 

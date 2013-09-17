@@ -34,6 +34,10 @@ maybe test??
 https://peercdn.com/docs
 ==
 
+-
+Give each anonymous user an id, so they can delete images
+-
+
 */
 
 /*

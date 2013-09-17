@@ -81,9 +81,10 @@ if ($reg) {
 	 */
 	
 	//diie();p
-	getUserHash('ryan');
+	//getUserHash('ryan');
 	if (password_verify($password, getUserHash($username))) {
 		$_SESSION['uid'] = getUserID($username);
+		$_SESSION['username'] = $username;
 		header('Location: index.php?action=user&id='.$_SESSION['uid']);
 	} else {
 		header('Location: index.php?action=login&username='.$username.'&incorrect=true');
