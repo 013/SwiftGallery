@@ -163,7 +163,7 @@ function addFormField(Tvalue, title){
 	//newIn += '<br /><input class="span3" id="title' + next + '" name="imgTitle' + next + '" type="text" value="' + title + '">';
 	newIn += '<span id="spantitle'+next+'" class="title '+next+'" >'+title+'</span><input name="imgTitle'+next+'" type="hidden" id="title'+next+'" value="'+title+'">';
 
-	newIn += '<br /><input class="span3" id="tag' + next + '" name="imgTag' + next + '" type="text" value="">';
+	newIn += '<br /><input class="span3" id="tag' + next + '" name="imgTag' + next + '" type="text" value=""><br>';
 	var newInput = $(newIn);
 	$(addto).after(newInput);
 	$("#field" + next).attr('data-source',$(addto).attr('data-source'));

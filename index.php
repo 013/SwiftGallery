@@ -29,11 +29,13 @@ switch($action) {
 
 function homepage() {
 	$results = array();
-	$data = Image::getList(100);
+	$data = Image::getList();
+	
 	$results['images'] = $data['results'];
 	$results['totalRows'] = $data['totalRows'];
 	$results['pageTitle'] = "Gallery";
-
+	
+	//echo "<pre>".$data."</pre>";
 	require("include/homepage.php");
 }
 

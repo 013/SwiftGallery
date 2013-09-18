@@ -26,7 +26,9 @@ to autofill common tags
 
 Upload form:
 http://blueimp.github.io/jQuery-File-Upload/
+--
 
+Mitigate CSRF attacks (easy)
 
 --
 ==
@@ -114,35 +116,41 @@ class Image {
 		if ($row) return new Image($row);
 	}
 
-	public static function getList($numRows=100, $order="uploadDate DESC") {
+	public static function getList($currentPage=1, $order="uploadDate DESC") {
 		// Get front page images
+		
+		$x = 1*$currentPage;
+		$y = $x+NUM_PER_PAGE;
+
 		$conn = new PDO(DB_DSN, DB_USERNAME, DB_PASSWORD);
-		$sql = "SELECT SQL_CALC_FOUND_ROWS *, UNIX_TIMESTAMP(uploadDate) as uploadDate FROM images WHERE published = 1 ORDER BY id DESC LIMIT :numRows";
+		$sql = "SELECT * FROM images WHERE published = 1 ORDER BY uploadDate DESC LIMIT :x, :y";
 
 		$st = $conn->prepare($sql);
-		$st->bindValue(":numRows", $numRows, PDO::PARAM_INT);
+		$st->bindValue(":x", $x, PDO::PARAM_INT);
+		$st->bindValue(":y", $y, PDO::PARAM_INT);
 		$st->execute();
 		$list = array();
-
+		
 		while ($row = $st->fetch()) {
 			$image = new Image($row);
 			$list[] = $image;
 		}
-
+		
 		$sql = "SELECT FOUND_ROWS() AS totalRows";
 		$totalRows = $conn->query($sql)->fetch();
 		$conn = null;
-
+		//$row = $st->fetch();
+		//return json_encode($row);
 		return(array("results"=>$list, "totalRows"=>$totalRows[0]));
 	}
 
 	public function insert() {
 		//not finished
 		$conn = new PDO(DB_DSN, DB_USERNAME, DB_PASSWORD);
-		$sql = "INSERT INTO images ( user, uploadDate, title, imageHash, mimeType, attr, album, tags, votes, views, published ) VALUES ( :user, FROM_UNIXTIME(:uploadDate), :title, :imageHash, :mimeType, :attr, :album, :tags, :votes, :views, :published)";
+		$sql = "INSERT INTO images ( user, uploadDate, title, imageHash, mimeType, attr, album, tags, votes, views, published ) VALUES ( :user, :uploadDate, :title, :imageHash, :mimeType, :attr, :album, :tags, :votes, :views, :published)";
 		$st = $conn->prepare($sql);
 		$st->bindValue(":user", $this->user, PDO::PARAM_STR);
-		$st->bindValue(":uploadDate", time(), PDO::PARAM_STR);//his->uploadDate, PDO::PARAM_STR);
+		$st->bindValue(":uploadDate", $this->uploadDate, PDO::PARAM_STR);
 		$st->bindValue(":title", $this->title, PDO::PARAM_STR);
 		$st->bindValue(":imageHash", $this->imageHash, PDO::PARAM_STR);
 		$st->bindValue(":mimeType", $this->mimeType, PDO::PARAM_STR);
