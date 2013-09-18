@@ -128,39 +128,14 @@ Group images as album
 <?=$message; ?>
 </form>
 
+<span id="title3" class="title 3" >hi</span>
+<input name="title3" type="hidden" id="title3" value="hi">
+
+
 
 <!--  ######  -->
 <script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
-<script type="text/javascript">
 
-var active = false;
-
-$(document).ready(function() {
-	$('.title').click(function() {
-		if (!active) {
-			$(this).html("<input type=\"text\" id=\"fooI\" value=\""+$(this).html()+"\">");
-			$('#fooI').focus();
-			active = true;
-		}
-	});
-
-	$('.title').focusout(function() {
-		hiddenTitle = "#title" + $(this).attr('class').split(' ')[1]
-		active = false;
-		$(hiddenTitle).val($('#fooI').val());
-		$(this).html($('#fooI').val());
-	});
-	$( "input[type='radio']" ).change(function() {
-		if( $( this ).val() == 0) {
-			$( "#albumtitle" ).fadeOut( 600 )
-		} else {
-			$( "#albumtitle" ).fadeIn( 600 )
-		}
-	});
-
-});
-
-</script>
 <!--
 <span id="title3" class="title 3" >hi</span>
 <input name="title3" type="hidden" id="title3" value="hi">
@@ -178,9 +153,30 @@ $(document).ready(function() {
 <script src="js/jquery.fineuploader-3.8.2.min.js" type="text/javascript"></script>
 
 <script type="text/javascript">
+
+	
+var next = 0;
+function addFormField(Tvalue, title){
+	var addto = "#fields";// + next;
+	next = next + 1;
+	var newIn = '<input id="field' + next + '" name="imgHash' + next + '" type="hidden" value="' + Tvalue + '">';
+	//newIn += '<br /><input class="span3" id="title' + next + '" name="imgTitle' + next + '" type="text" value="' + title + '">';
+	newIn += '<span id="spantitle'+next+'" class="title '+next+'" >'+title+'</span><input name="imgTitle'+next+'" type="hidden" id="title'+next+'" value="'+title+'">';
+
+	newIn += '<br /><input class="span3" id="tag' + next + '" name="imgTag' + next + '" type="text" value="">';
+	var newInput = $(newIn);
+	$(addto).after(newInput);
+	$("#field" + next).attr('data-source',$(addto).attr('data-source'));
+	$("#count").val(next);
+}
+
+
 $(document).ready(function() {
+	
+	
+	
 	$("#fine-uploader").fineUploader({
-		debug: true,
+		debug: false,
 		request: {
 			endpoint: 'include/handleUpload.php'
 		},
@@ -271,21 +267,41 @@ $(document).ready(function() {
 		event.preventDefault();
 	});
 */
+		var active = false;	
+		$('#foo').on('focusout', function() {
+			//alert(this.attr('id'));
+			if (!$("#fooI").is(":focus")) {
+				hiddenTitle = "#title" + $("#fooI").attr('class');//.split(' ')[1]
+				nTitle = "#spantitle" + $("#fooI").attr('class');//.split(' ')[1]
+				$(hiddenTitle).val($('#fooI').val());
+				$(nTitle).html($('#fooI').val());
+				active = false;
+			}
+		});
+
+	$('#foo').on('click', '.title', function() {
+		if (!active) {
+			active = true;
+			Fclass = $(this).attr('class').split(' ')[1]
+			$(this).html("<input type=\"text\" class=\""+Fclass+"\" id=\"fooI\" value=\""+$(this).html()+"\">");
+			$('#fooI').focus();
+		}
+	});
+
+
+	
+	
+	$( "input[type='radio']" ).change(function() {
+		if( $( this ).val() == 0) {
+			$( "#albumtitle" ).fadeOut( 600 )
+		} else {
+			$( "#albumtitle" ).fadeIn( 600 )
+		}
+	});
+
+
+
 });
-
-var next = 0;
-function addFormField(Tvalue, title){
-	var addto = "#fields";// + next;
-	next = next + 1;
-	var newIn = '<input id="field' + next + '" name="imgHash' + next + '" type="hidden" value="' + Tvalue + '">';
-	newIn += '<br /><input class="span3" id="title' + next + '" name="imgTitle' + next + '" type="text" value="' + title + '">';
-	newIn += '<br /><input class="span3" id="tag' + next + '" name="imgTag' + next + '" type="text" value="">';
-	var newInput = $(newIn);
-	$(addto).after(newInput);
-	$("#field" + next).attr('data-source',$(addto).attr('data-source'));
-	$("#count").val(next);
-}
-
 </script>
 
 <?php include "include/footer.php" ?>
