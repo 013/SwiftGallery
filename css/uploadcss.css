@@ -1,0 +1,39 @@
+
+.form-upload {
+	max-width: 530px;
+	padding: 15px;
+	margin: 0 auto;
+}
+.form-upload .form-upload-heading,
+.form-upload .checkbox {
+	margin-bottom: 10px;
+}
+.form-upload .checkbox {
+	font-weight: normal;
+}
+.form-upload .form-control {
+	position: relative;
+	font-size: 16px;
+	height: auto;
+	padding: 10px;
+	-webkit-box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	box-sizing: border-box;
+}
+
+.qq-upload-list {
+	text-align: left;
+}
+
+/* For the bootstrapped demos */
+li.alert-success {
+	background-color: #DFF0D8;
+}
+
+li.alert-error {
+	background-color: #F2DEDE;
+}
+
+.alert-error .qq-upload-failed-text {
+	display: inline;
+}

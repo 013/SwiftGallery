@@ -33,7 +33,6 @@ PRIMARY KEY (`id`),
 UNIQUE KEY `id` (`id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
 
-
 CREATE TABLE IF NOT EXISTS `album` (
 `id` int(11) NOT NULL AUTO_INCREMENT,
 `owner` varchar(32) NOT NULL,
@@ -61,3 +60,9 @@ CREATE TABLE IF NOT EXISTS `users` (
 `locked` int(11) NOT NULL,
 PRIMARY KEY (`id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
+
+CREATE TABLE IF NOT EXISTS `tags` (
+`tag` varchar(64) NOT NULL,
+KEY `tag` (`tag`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
