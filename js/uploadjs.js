@@ -48,3 +48,49 @@ $(document).ready(function() {
 			enableAuto: true
 		},
 		autoUpload: true
+	}).on('complete', function(event, id, fileName, responseJSON) {
+		if (responseJSON.success) {
+			// Append image to somewhere in form
+			/*$(this).append(
+			'<img src="images/'
+			+responseJSON.md5.substring(0,4)+'/'+responseJSON.md5.substring(4,12)+'_thumb.'+fileName.split('.').reverse()[0]+
+			'" >'
+			);*/
+			$( ".alert-success" ).fadeOut( 1600 )
+			
+			addFormField(responseJSON.md5, fileName);//responseJSON.uploadName)
+		}
+	});
+
+	var active = false;
+	$('#foo').on('focusout', function() {
+		//alert(this.attr('id'));
+		if (!$("#fooI").is(":focus")) {
+			hiddenTitle = "#title" + $("#fooI").attr('class');//.split(' ')[1]
+			nTitle = "#spantitle" + $("#fooI").attr('class');//.split(' ')[1]
+			$(hiddenTitle).val($('#fooI').val());
+			$(nTitle).html($('#fooI').val());
+			active = false;
+		}
+	});
+		
+	$('#foo').on('click', '.title', function() {
+		if (!active) {
+			active = true;
+			Fclass = $(this).attr('class').split(' ')[1]
+			$(this).html("<input type=\"text\" class=\""+Fclass+"\" id=\"fooI\" value=\""+$(this).html()+"\">");
+			$('#fooI').focus();
+		}
+});
+	
+		
+	$( "input[type='radio']" ).change(function() {
+		if( $( this ).val() == 0) {
+			$( "#albumtitle" ).fadeOut( 600 )
+		} else {
+			$( "#albumtitle" ).fadeIn( 600 )
+		}
+	});
+		
+		
+});

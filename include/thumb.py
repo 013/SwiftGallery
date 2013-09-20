@@ -11,7 +11,7 @@ def thumb(infile, ext):
 		im = Image.open(infile)
 		im = im.convert('RGB')
 		im.thumbnail(size, Image.ANTIALIAS)
-		im.save(outfile, types[ext.lower()])
+		im.save(outfile, types[ext.lower()], quality=95, optimize=True, progressive=True)
 	except IOError, e:
 		# Needs changing to write errors to a file
 		print "cannot create thumbnail for", infile
