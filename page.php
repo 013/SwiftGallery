@@ -1,5 +1,16 @@
 <?
 require('include/config.php');
+
+/*
+ * Scrolling through the home page
+ * Upon reaching the bottom reqest page.php?page=2
+ * Which will retrieve the html and append to the page
+ * Then page.php?page=3
+ *
+ * Need to add functionality filter results and get pages for search terms, etc etc
+ *
+ */
+
 $page = $_GET['page'];
 $results = array();
 $data = Image::getList($page);

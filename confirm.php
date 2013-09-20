@@ -72,6 +72,7 @@ if ($reg) {
 		
 		
 		$_SESSION['uid'] = $userID;
+		$_SESSION['username'] = $username;
 		header('Location: ?action=user&id='.$_SESSION['uid']);
 	}
 } else {

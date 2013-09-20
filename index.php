@@ -9,6 +9,12 @@ switch($action) {
 		upload();
 		break;
 	case 'view':
+		/*
+		 * Each image can be viewed on an individual page, if a user
+		 * simply clicks on an image it will pop up
+		 * but not take them to a new 
+		 *
+		 */
 		viewImg($_GET['id']);
 		break;
 	case 'register':
@@ -29,13 +35,14 @@ switch($action) {
 
 function homepage() {
 	$results = array();
-	$data = Image::getList();
-	
+
+	// At the end of every page call this function
+	// Using the next page number as an arguement
+	$data = Image::getList();	
 	$results['images'] = $data['results'];
 	$results['totalRows'] = $data['totalRows'];
 	$results['pageTitle'] = "Gallery";
 	
-	//echo "<pre>".$data."</pre>";
 	require("include/homepage.php");
 }
 
@@ -50,6 +57,8 @@ function upload() {
 }
 
 function viewImg($id) {
+	// Temporary for now
+	//
 	$results = array();
 	$results['pageTitle'] = "Viewing".htmlspecialchars($id);
 	$image = Image::getById($id);
@@ -77,6 +86,7 @@ function login() {
 function logout() {
 	session_start();
 	unset($_SESSION['uid']);
+	unset($_SESSION['username']);
 	session_destroy();
 	header('Location: index.php');
 }

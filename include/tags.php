@@ -14,6 +14,9 @@ $conn = null;
 while ($row = $st->fetch()) {
 	 array_push($terms, $row['tag']);
 }
-echo json_encode($terms);
+
+if (count($terms) >=1) {
+	echo json_encode($terms);
+}
 
 ?>
