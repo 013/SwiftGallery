@@ -7,13 +7,17 @@ include "include/password.php";
   *
   */
 
+// Even if they're not logged in, this will be set from header.php
+$username = $_SESSION['username'];
+$token = User::keyPair($username);
+
 if (!isset($_SESSION['uid'])) {
 	$message = "<small>You are not currently logged in. (<a href=\"index.php?action=login\">Login</a>/<a href=\"index.php?action=register\">Register</a>)</small>";
-	$username = "Anonymous";
-	$hiddenField = User::keyPair($username);
+	//$username = //"Anonymous";
+	//$hiddenField = User::keyPair($username);
 } else {
 	$message = "";
-	$username = User::getUsername($_SESSION['uid']);
+	//$username = //User::getUsername($_SESSION['uid']);
 	/*$options = [
 		'cost' => 12,
 	];
@@ -30,7 +34,6 @@ if (!isset($_SESSION['uid'])) {
 
 <form class="form-upload" id="foo" method="POST" action="include/uploadconf.php">
 	<h2 class="form-upload-heading">Upload</h2>
-<?=$hiddenField; ?>
 	<div class="form-group">
 		<input type="text" class="form-control" id="albumtitle" placeholder="Album Title" name="albumtitle" style="display: none;">
 	</div>
@@ -38,6 +41,7 @@ if (!isset($_SESSION['uid'])) {
 <div id="fine-uploader">
 </div>
 <input type="hidden" name="count" value="1" id="count" />
+<input type="hidden" name="token" value="<?=$token;?>" id="token" />
 
 <div class="control-group" id="fields">
 <div class="controls" id="profs">

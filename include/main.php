@@ -116,10 +116,10 @@ class Image {
 		if ($row) return new Image($row);
 	}
 
-	public static function getList($currentPage=1, $order="uploadDate DESC") {
+	public static function getList($currentPage=0, $order="uploadDate DESC") {
 		// Get front page images
 		
-		$x = 1*$currentPage;
+		$x = $currentPage * NUM_PER_PAGE;
 		$y = $x+NUM_PER_PAGE;
 
 		$conn = new PDO(DB_DSN, DB_USERNAME, DB_PASSWORD);
@@ -230,14 +230,14 @@ class User {
 		// Decrypt the data using the private key and store the results in $decrypted
 		// openssl_private_decrypt($encrypted, $decrypted, $privkey);
 		*/
-		
+		/*
 		$options = [
 			'cost' => 12,
 		];
-		
-		$pubkey = password_hash($username, PASSWORD_BCRYPT, $options);
-		$privkey = password_hash($pubkey, PASSWORD_BCRYPT, $options);
-
+		*/
+		$pubkey = self::gen_uuid(); //password_hash($username, PASSWORD_BCRYPT, $options);
+		$privkey = self::gen_uuid();//password_hash($pubkey, PASSWORD_BCRYPT, $options);
+		// The privKey probably isn't even needed.
 		$conn = new PDO(DB_DSN, DB_USERNAME, DB_PASSWORD);
 		$sql = "INSERT INTO tempKey ( pubkey, privkey, data ) VALUES ( :pubkey, :privkey, :data)";
 		$st = $conn->prepare($sql);
@@ -249,9 +249,19 @@ class User {
 		$id = $conn->lastInsertId();
 		$conn = null;
 
-		$field = "<input type='hidden' name='sks' id='sks' value='$pubkey'>";// style=\"display: none;\" hidden>";
-		
-		return $field;
+		return $pubkey;
+	}
+	
+	public static function checkToken($pubKey, $username) {
+		$conn = new PDO(DB_DSN, DB_USERNAME, DB_PASSWORD);
+		$sql = "SELECT * FROM tempKey WHERE pubkey = :pubkey";
+		$st = $conn->prepare($sql);
+		$st->bindValue(":pubkey", $pubKey, PDO::PARAM_STR);
+		$st->execute();
+		$row = $st->fetch();
+		$conn = null;
+
+		return $row['username'] = $username;
 	}
 
 	public static function getHashedName($pubkey) {
@@ -272,7 +282,33 @@ class User {
 	 * getHashedName("$2y$12\$AC2qoRXTIg3AJ6Y3VRDTEe4Xo/eCVAeWtWZOrz6jupZzs8WCEGHdS");
 	 *
 	 */
-	
+	private static function gen_uuid() {
+		/*
+		 * Generates a v4 UUID
+		 * 
+		 */
+		return sprintf( '%04x%04x-%04x-%04x-%04x-%04x%04x%04x',
+			// 32 bits for "time_low"
+			mt_rand( 0, 0xffff ), mt_rand( 0, 0xffff ),
+
+			// 16 bits for "time_mid"
+			mt_rand( 0, 0xffff ),
+
+			// 16 bits for "time_hi_and_version",
+			// four most significant bits holds version number 4
+			mt_rand( 0, 0x0fff ) | 0x4000,
+
+			// 16 bits, 8 bits for "clk_seq_hi_res",
+			// 8 bits for "clk_seq_low",
+			// two most significant bits holds zero and one for variant DCE1.1
+			mt_rand( 0, 0x3fff ) | 0x8000,
+
+			// 48 bits for "node"
+			mt_rand( 0, 0xffff ), mt_rand( 0, 0xffff ), mt_rand( 0, 0xffff )
+		);
+	}
+
+
 }
 
 ?>

@@ -14,7 +14,7 @@ if (isset($_SESSION['username'])) {
 <html lang="en">
 <head>
 <title><?=$results['pageTitle'];?></title>
-<link href="data:image/x-icon;base64,AAABAAEAEBACAAAAAACwAAAAFgAAACgAAAAQAAAAIAAAAAEAAQAAAAAAQAAAAAAAAAAAAAAAAgAAAAAAAAAAAAAA/4QAAH/+AACAAQAAgAEAAIABAACAAQAAgAEAAIABAACAAQAAgAEAAIABAACAAQAAgAEAAIABAACAAQAAgAEAAH/+AACAAQAAf/4AAH/+AAB//gAAf/4AAH/+AAB//gAAf/4AAH/+AAB//gAAf/4AAH/+AAB//gAAf/4AAH/+AACAAQAA" rel="icon" type="image/x-icon" />
+<link href="favicon.ico" rel="icon" type="image/x-icon" />
 <script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
 </head>
 <body>

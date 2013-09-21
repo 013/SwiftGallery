@@ -9,7 +9,7 @@ define("NUM_PER_PAGE", 50); // Amount of images to show per page
 
 define("PRODUCT_NAME", "Swiftler");
 
-include("include/main.php");
+include("/usr/share/nginx/www/SwiftGallery/include/main.php");
 
 ?>
 

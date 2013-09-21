@@ -1,6 +1,6 @@
 <?
 
-include('configShort.php');
+include('config.php');
 
 $term = $_GET['term'];
 $terms = array();
