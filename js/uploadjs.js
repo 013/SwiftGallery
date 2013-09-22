@@ -20,7 +20,7 @@ $(document).ready(function() {
 	
 	
 	$("#fine-uploader").fineUploader({
-		debug: false,
+		debug: true,
 		request: {
 			endpoint: 'include/handleUpload.php'
 		},

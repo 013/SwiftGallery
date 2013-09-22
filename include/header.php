@@ -4,7 +4,7 @@ if (isset($_SESSION['username'])) {
 	// If they are already logged in, or they already have a temp username
 	// If they have a temp username, they won't have a uid set
 } else {
-	$_SESSION['username'] = 'Anonymous'+ mt_rand( 0, 0xffff );
+	$_SESSION['username'] = 'Anonymous'. mt_rand( 0, 0xffff );
 	// Create a temp username
 }
 

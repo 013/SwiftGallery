@@ -15,11 +15,14 @@ $uploader->sizeLimit = 20 * 1024 * 1024;
 // Specify the input name set in the javascript.
 $uploader->inputName = 'qqfile';
 
+/*
 if (isset($_SESSION['uid'])) {
 	$username = $_SESSION['uid'];
 } else {
 	$username = "Anonymous";
 }
+*/
+$username = $_SESSION['username'];
 
 // Call handleUpload() with the name of the folder, relative to PHP's getcwd()
 $result = $uploader->handleUpload('../images', $username);

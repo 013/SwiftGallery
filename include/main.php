@@ -208,6 +208,21 @@ class User {
 		if (isset($row['username'])) return $row['username'];
 		return false;
 	}
+	
+	public static function checkOwner($hash) {
+		$conn = new PDO (DB_DSN, DB_USERNAME, DB_PASSWORD);
+		$sql = "SELECT user FROM images WHERE imageHash = :hash";
+		$st = $conn->prepare($sql);
+		$st->bindValue(":hash", $hash, PDO::PARAM_STR);
+		$st->execute();
+		$row = $st->fetch();
+		$conn = null;
+
+		return $row['user'];
+		//if (isset($row['username'])) return $row['username'];
+		//return false;
+
+	}
 
 	public static function keyPair($username) {
 		/*

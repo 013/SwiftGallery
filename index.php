@@ -85,10 +85,11 @@ function login() {
 
 function logout() {
 	session_start();
+	echo $_SESSION['username'];
 	unset($_SESSION['uid']);
 	unset($_SESSION['username']);
 	session_destroy();
-	header('Location: index.php');
+	//header('Location: index.php');
 }
 
 ?>

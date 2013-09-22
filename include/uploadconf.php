@@ -29,6 +29,14 @@ if (!User::checkToken($token, $username)) { die('Token did not match'); }
 
 for ($i=1; $i<= $amount; $i++) {
 	$images[$_POST["imgHash$i"]] = $_POST["imgTitle$i"];
+
+	if ( User::checkOwner( $_POST["imgHash$i"] ) == $username ) {
+		// This user owns this image
+		// add tags
+		// set to published
+		// If album, update album id
+	}
+
 	// $imageTags = array_merge($imageTags, explode(',' $_POST["imgTags$i"]);
 	// var_dump( explode(',', $x) );
 	// $imageTags[$_POST["imgHash$i"]] = $_POST["imgTag$i"];
@@ -39,7 +47,9 @@ if ( (int) $_POST['albumradio'] == 1) {
 }
 
 
-?><pre><?=var_dump($images); ?></pre><?
+//var_dump( $images );
+
+
 
 
 ?>
