@@ -9,13 +9,16 @@ if (!isset($_SESSION['username'])) {
 }
 
 $username = $_SESSION['username'];
-//$id = $_SESSION['uid'];
+$hash = $_POST['imageHash'];
 
-// select username from images where imageHash = $_GET['hash']
-// if $username = row['username'], delete row and image
-// 
-
-//var_dump($_GET);
-//var_dump($_SESSION);
+if ( User::checkOwner( $_POST["imgHash$i"] ) == $username ) {
+	$conn = new PDO (DB_DSN, DB_USERNAME, DB_PASSWORD);
+	$sql = "DELETE FROM images WHERE imageHash = :hash";
+	$st = $conn->prepare($sql);
+	$st->bindValue(":hash", $hash, PDO::PARAM_INT);
+	$st->execute();
+	//$row = $st->fetch();
+	$conn = null;
+}
 
 ?>

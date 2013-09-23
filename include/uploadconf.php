@@ -21,11 +21,16 @@ $albumTitle = 	$_POST['albumtitle'];
 $images = 		array();
 $imageTags =	array();
 $amount = 		(int) $_POST['count'];
-$album =		false;
+$album =		0;
 $username = $_SESSION['username'];
 // First check if the token matches the username in tempKey table
 
 if (!User::checkToken($token, $username)) { die('Token did not match'); }
+
+if ( (int) $_POST['albumradio'] == 1) {
+	// Insert into album table and get last inserted ID
+	$album = 00;
+}
 
 for ($i=1; $i<= $amount; $i++) {
 	$images[$_POST["imgHash$i"]] = $_POST["imgTitle$i"];
@@ -33,6 +38,15 @@ for ($i=1; $i<= $amount; $i++) {
 	if ( User::checkOwner( $_POST["imgHash$i"] ) == $username ) {
 		// This user owns this image
 		// add tags
+		$conn = new PDO (DB_DSN, DB_USERNAME, DB_PASSWORD);
+		$sql = "UPDATE images SET title=:title, tags=:tags, published=1, album=:album WHERE imageHash= :hash";
+		$st = $conn->prepare($sql);
+		$st->bindValue(":title", $_POST["imgTitle$i"], PDO::PARAM_STR);
+		$st->bindValue(":tags", $_POST["imgTag$i"], PDO::PARAM_STR);
+		$st->bindValue(":album", $album, PDO::PARAM_STR);
+		$st->bindValue(":hash", $_POST["imgHash$i"], PDO::PARAM_STR);
+		$st->execute();
+		$conn = null;
 		// set to published
 		// If album, update album id
 	}
@@ -42,14 +56,6 @@ for ($i=1; $i<= $amount; $i++) {
 	// $imageTags[$_POST["imgHash$i"]] = $_POST["imgTag$i"];
 }
 
-if ( (int) $_POST['albumradio'] == 1) {
-	$album = true;
-}
-
-
 //var_dump( $images );
-
-
-
 
 ?>
