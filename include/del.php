@@ -1,6 +1,9 @@
 <?
 
-require('include/config.php');
+require('main.php');
+define("DB_DSN", "mysql:host=localhost;dbname=gallery");
+define("DB_USERNAME", "gallery_user");
+define("DB_PASSWORD", "LxNRmRPnUhnfRV5s");
 session_start();
 
 if (!isset($_SESSION['username'])) { 
@@ -11,13 +14,12 @@ if (!isset($_SESSION['username'])) {
 $username = $_SESSION['username'];
 $hash = $_POST['imageHash'];
 
-if ( User::checkOwner( $_POST["imgHash$i"] ) == $username ) {
+if ( User::checkOwner( $hash ) == $username ) {
 	$conn = new PDO (DB_DSN, DB_USERNAME, DB_PASSWORD);
 	$sql = "DELETE FROM images WHERE imageHash = :hash";
 	$st = $conn->prepare($sql);
 	$st->bindValue(":hash", $hash, PDO::PARAM_INT);
 	$st->execute();
-	//$row = $st->fetch();
 	$conn = null;
 }
 

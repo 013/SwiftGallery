@@ -4,9 +4,9 @@ function addFormField(Tvalue, title){
 	var addto = "#fields";// + next;
 	next = next + 1;
 	var newIn = '<input id="field' + next + '" name="imgHash' + next + '" type="hidden" value="' + Tvalue + '">';
+	newIn += '<span id="' + Tvalue + '" class="del" style="cursor: pointer;"> &times; </span>';
 	//newIn += '<br /><input class="span3" id="title' + next + '" name="imgTitle' + next + '" type="text" value="' + title + '">';
 	newIn += '<span id="spantitle'+next+'" class="title '+next+'" >'+title+'</span><input name="imgTitle'+next+'" type="hidden" id="title'+next+'" value="'+title+'">';
-
 	newIn += '<br /><input class="span3" id="tag' + next + '" name="imgTag' + next + '" type="text" value=""><br>';
 	var newInput = $(newIn);
 	$(addto).after(newInput);
@@ -16,8 +16,14 @@ function addFormField(Tvalue, title){
 
 
 $(document).ready(function() {
-	
-	
+	$('.del').on('click', function() {	
+		hash = $(this).attr("id");
+		$.post( "include/del.php", {imageHash : hash} )
+			.done(function( data ) {
+				$( "body" ).append( data );
+			});
+	});
+
 	
 	$("#fine-uploader").fineUploader({
 		debug: true,

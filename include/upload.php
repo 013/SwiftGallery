@@ -46,8 +46,6 @@ if (!isset($_SESSION['uid'])) {
 <div class="control-group" id="fields">
 <div class="controls" id="profs">
 <div class="input-append">
-<!--<input id="field0" name="imageHash0" type="hidden" hidden>
-<input id="title0" name="imageTitle0" type="hidden" hidden>-->
 </div>
 </div>
 </div>
@@ -67,9 +65,6 @@ Group images as album
 <button class="btn btn-lg btn-primary btn-block" type="submit">Upload</button>
 <?=$message; ?>
 </form>
-
-<span id="title3" class="title 3" >hi</span>
-<input name="title3" type="hidden" id="title3" value="hi">
 
 <script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
 
