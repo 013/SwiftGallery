@@ -84,17 +84,17 @@ $('.showme').mouseover(function() {
 </script>
 <style>
 .hi { width:250px; height:187px; overflow: hidden; }
-.button {width:250px; height:187px; position:fixed; overflow: hidden; }
-.showme {width:245px; height:30px; position:fixed; background: rgba(25, 25, 25, 0.5); display:none; cursor: pointer; color: #fff; padding: 5px 0px 0px 5px; overflow: hidden; }
+.imbutton {width:250px; height:187px; position:fixed; overflow: hidden; }
+.showme {width:250px; height:30px; position:fixed; background: rgba(25, 25, 25, 0.65); display:none; cursor: pointer; color: #fff; padding: 5px 5px 5px 5px; overflow: hidden; box-shadow: inset 0 0 5px #111; }
 </style>
 
 <div class="hi">
-<div class="button">
+<div class="imbutton">
 <img style="z-index: -1;" src="http://ryan.swiftler.com/SwiftGallery/images/bdf3/bf1da340_thumb.jpg">
 </div>
 <div class="showme">
      Title ~~~
-	 <span class="pull-right glyphicon glyphicon-remove-sign"></span>
+	 <span class="pull-right glyphicon glyphicon-remove"></span>
 </div>
 </div>
 <!--
