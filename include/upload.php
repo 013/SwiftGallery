@@ -9,8 +9,8 @@ include "include/password.php";
 
 // Even if they're not logged in, this will be set from header.php
 $username = $_SESSION['username'];
-$token = User::keyPair($username);
-
+$token = User::keyPair($username); // Is this even used??? Hello...
+// $_SESSION['uid'] is only set if the user is authenticated
 if (!isset($_SESSION['uid'])) {
 	$message = "<small>You are not currently logged in. (<a href=\"index.php?action=login\">Login</a>/<a href=\"index.php?action=register\">Register</a>)</small>";
 	//$username = //"Anonymous";

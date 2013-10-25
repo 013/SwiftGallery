@@ -1,61 +1,69 @@
-
+/* JavaScript - Don't smile because it's over, cry because it may happen again */
 var next = 0;
 function addFormField(Tvalue, title){
-	var addto = "#fields";// + next;
+	/*
+	 * This function is hard to follow
+	 * and I don't know what's happening
+	 * 22/10/13 - Slightly improved
+	*/
+	var addto = "#fields";
 	next = next + 1;
+	
+	// First - Add a hidden field containing the image hash
 	var newIn = '<input id="field' + next + '" name="imgHash' + next + '" type="hidden" value="' + Tvalue + '">';
+	
+	// Add a div containing the image thumbnail, and divs containing the title
 	newIn+='<div class="hi"><div class="imbutton"><img style="z-index: -1;" src="images/'+
 	Tvalue.substring(0,4)+'/'+Tvalue.substring(4,12)+'_thumb.'+title.split('.').reverse()[0]+
 	'"></div><div class="showme">'+
      title+
 	 '<span class="pull-right glyphicon glyphicon-remove"></span></div></div>';
-
-	//newIn += '<span id="' + Tvalue + '" class="del" style="cursor: pointer;"> &times; </span>';
-	//
-	//newIn += '<img src="images/'
-	//		+Tvalue.substring(0,4)+'/'+Tvalue.substring(4,12)+'_thumb.'+title.split('.').reverse()[0]+
-	//		'" >';
-	//
-	//newIn += '<span id="spantitle'+next+'" class="title '+next+'" >'+title+'</span><input name="imgTitle'+next+'" type="hidden" id="title'+next+'" value="'+title+'">';
-	//
+	
+	// Add a field for the user to add tags
 	newIn += '<br /><input class="span3" id="tag' + next + '" name="imgTag' + next + '" type="text" value=""><br>';
 	
 	var newInput = $(newIn);
 	$(addto).after(newInput);
 	$("#field" + next).attr('data-source',$(addto).attr('data-source'));
 	$("#count").val(next);
+	
+	// The rest of the code in this function is controls the mouse over stuff	//
+	$('.hi').on('mouseover', function() {										//
+		console.log('.hi mouseover');											//
+		$('.showme').slideDown();												//
+	});																			//
+																				//
+	$('.hi').mouseout(function() {												//
+		console.log('.hi mouseout');
+		window.isoverdiv = false;
+		setTimeout(function() {
+			if (!window.isoverdiv) {
+				$('.showme').slideUp();
+			}
+		}, 200);
+	});
+
+	$('.showme').mouseover(function() {
+		window.isoverdiv = true;
+	});
+	// -----------------------------------------------------------------------------
 }
 
 
-$(document).ready(function() {
-	$('.del').on('click', function() {	
+	/* Clicking on a `del` class should remove it */
+	/*$('.del').on('click', function() {
 		hash = $(this).attr("id");
 		$.post( "include/del.php", {imageHash : hash} )
 			.done(function( data ) {
 				$( "body" ).append( data );
 			});
 	});
-
-	/* JS for hovering over image */
-	$('.hi').on('mouseover', function() {
-			$('.showme').slideDown();
-	});
-
-	$('.hi').mouseout(function() {
-			window.isoverdiv = false;
-			setTimeout(function() {
-				if (!window.isoverdiv) {
-					$('.showme').slideUp();
-				}
-		 }, 200);
-	});
-
-	$('.showme').mouseover(function() {
-			window.isoverdiv = true;
-	});
-	/*       -        -        */
+	*/
+	
+	
 
 
+$(document).ready(function() {
 	$("#fine-uploader").fineUploader({
 		debug: true,
 		request: {
@@ -78,7 +86,7 @@ $(document).ready(function() {
 			enabled: false
 		},
 		deleteFile: {
-			enabled: false,//true,
+			enabled: false,
 			endpoint: 'include/handleUpload.php'
 		},
 		retry: {
@@ -120,7 +128,7 @@ $(document).ready(function() {
 		}
 });
 	
-		
+	/* Checking/unchecking will fade an input box in/out */
 	$( "input[type='radio']" ).change(function() {
 		if( $( this ).val() == 0) {
 			$( "#albumtitle" ).fadeOut( 600 )

@@ -47,6 +47,7 @@ function homepage() {
 }
 
 function userArea($id) {
+	// Still a WIP
 	$results['pageTitle'] = "User: ".htmlspecialchars($id);//.getUsername($id);
 	require("include/user.php");
 }
@@ -93,6 +94,5 @@ function logout() {
 }
 
 ?>
-
 
 
